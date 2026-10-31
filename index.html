@@ -42,36 +42,5 @@
         tone-mapping="neutral">
     </model-viewer>
 
-    <script type="module">
-        // Colors sampled from the reference image
-        const SAGE  = '#BFD3BE'; // body + lid
-        const CORAL = '#D9877C'; // ring + spout accents
-
-        // Any material whose name matches this gets the coral accent.
-        // Check the browser console for your model's material names and adjust if needed.
-        const ACCENT_PATTERN = /ring|band|spout|accent|trim|seal|button|tab/i;
-
-        const viewer = document.getElementById('bottle');
-
-        viewer.addEventListener('load', () => {
-            console.log('Materials:', viewer.model.materials.map(m => m.name));
-
-            for (const mat of viewer.model.materials) {
-                const pbr = mat.pbrMetallicRoughness;
-
-                // Remove any color texture so the flat color shows through
-                if (pbr.baseColorTexture && pbr.baseColorTexture.texture) {
-                    pbr.baseColorTexture.setTexture(null);
-                }
-
-                pbr.setBaseColorFactor(ACCENT_PATTERN.test(mat.name) ? CORAL : SAGE);
-
-                // Soft matte finish like the reference
-                pbr.setMetallicFactor(0);
-                pbr.setRoughnessFactor(0.55);
-            }
-        });
-    </script>
-
 </body>
 </html>
